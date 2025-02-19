@@ -1,0 +1,7 @@
+Vivado Simulator 2019.2
+Time resolution is 1 ps
+Test case 1: Cache hit
+Test case 2: Cache miss
+$finish called at time : 0 fs : File "C:/Users/mdjav/project_1/project_1.srcs/sim_1/new/tb.v" Line 82
+Test case 1: Cache hit failed (data)
+Test case 2: Cache miss failed (valid)

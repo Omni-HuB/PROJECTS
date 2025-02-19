@@ -1,0 +1,13 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../ca_PROJECT_NEW2.srcs/sources_1/new/AxDeDuplication.v" \
+"../../../../ca_PROJECT_NEW2.srcs/sources_1/new/L1DCache.v" \
+"../../../../ca_PROJECT_NEW2.srcs/sources_1/new/main_memory.v" \
+"../../../../ca_PROJECT_NEW2.srcs/sources_1/new/top_module.v" \
+"../../../../ca_PROJECT_NEW2.srcs/sim_1/new/tb.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

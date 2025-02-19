@@ -1,0 +1,374 @@
+Project 2: Implementation of Memory Subsystem with Approximate Data Transfer
+
+Project Summary:
+Whenever there is a cache miss in L1 data (L1D) cache, data is fetched from the next memory
+layer. However, as the next memory layer is not close to the core, it takes a significant amount of energy in order to
+bring data from next memory layer to the L1D cache. In this project, you will implement a memory subsystem
+consisting of an L1D cache and a main memory. Whenever there is a miss in L1D cache, an error tolerance
+information will be sent along with the data request that aims to reduce power consumption. This project will be
+implemented using the HDL language of your choice (Verilog, VHDL, SystemVerilog), though we will be able to help
+you only in Verilog.
+
+
+Project Description:
+In this project, we have a 2 KB, 4 way set associative L1D cache. Each cache line is of 32 bytes each and processor
+word size is of 4 bytes. Note that this size excludes the tag information present in each cache block. Just as in a
+typical cache, just passing the address should give a word size value. During the evaluation, a 32 bit address will be
+given and the output should be a word (4 byte) value.
+Whenever there is a cache miss in L1D cache, the memory request is sent to a 8 KB main memory, with each
+location of 4 bytes each. Note that in case of cache miss, the cache line is fetched and not just the word missed. As
+each cache line is of 32 bytes and processor size is of 4 bytes, the transfer happens as a stream of eight 4-byte
+numbers. Make sure that the first data is multiple of 8, else wrong data may be passed as output. As the main
+memory may not be available, a simple protocol consisting of four signals- CLK, VALID, READY and DATA. A
+transfer takes place when both VALID and READY are asserted. The summary of each signal is given below:
+
+
+
+Signal		Source		Description
+
+CLK 	Clock Source 	Global clock signals. All signals are sampled at the rising edge of the clock.
+
+VALID 	Master 	VALID indicates that the master is driving a valid transfer. For both load and store operation, asserted by L1D cache to initiate transfer.For load operation, once READY signal is received, it sends theaddress. Deasserted when the data is received.For store operation,once READY signal is received, it sends the address followed by the data. Deasserted when the data is sent.
+
+READY 	Slave 	READY indicates that the slave can accept a transfer in the current cycle. For both load and store operation, asserted by the main memory in next clock cycle after receiving the VALID request. For load operation,it sends the data to the L1D cache after receiving the address. Deasserted by the main memory after last data is sent. For store operation, it stores the data in the buffer and then modifies the main memory. Deasserted by the main memory after last data is received.
+
+DATA[31:0] Master/Slave DATA is the primary data passing across the interface. The L1D cache sends(recieves) the address(data) to (from) the main memory using this bus.
+
+
+
+The data transfer in this case happens as a sequence of eight-four byte numbers. This causes a lot of area consumption. In order to reduce the data transfer, we compress the data before sending it across the protocol. In
+this project, you will implement the AxDeduplication compression scheme discussed in AxBA. Note that you just need to implement the AxDeduplication scheme and not the software aspects of AxBA.
+
+Mid-Project Deliverables:
+1. Implement the memory subsystem for load operation without compression.
+2. During the evaluation, the address and the data present in the main memory and L1D cache will be provided. Highlight the protocol signals and explain the usage.
+
+End-Project Deliverables:
+1. Completed memory subsystem with load/store compression
+
+
+THE CODE I HAVE IS :
+
+MAIN_MEMORY CODE:
+
+module MainMemory (
+  input wire clk,
+  input wire rst,
+  input wire [31:0] address,
+  output wire [31:0] data,
+  input wire valid,
+  output reg ready
+);
+
+  // Define main memory parameters
+  parameter MEM_SIZE = 8192; // 8 KB
+  parameter MEM_WORD_SIZE = 4; // 4 bytes
+
+  // Declare memory storage
+  reg [31:0] memory_data [0:MEM_SIZE / MEM_WORD_SIZE - 1];
+
+  // Memory state
+  reg [31:0] read_data;
+  reg mem_ready;
+
+  // Implement memory read logic
+  always @(posedge clk or posedge rst) begin
+    if (rst) begin
+      // Reset memory and other signals
+      mem_ready <= 0;
+    end else begin
+      // Read data from memory when mem_ready is 1
+      if (mem_ready) begin
+        read_data = memory_data[address / MEM_WORD_SIZE];
+      end
+    end
+  end
+
+  // Logic for handling memory read requests
+  always @(posedge clk or posedge rst) begin
+    if (rst) begin
+      // Reset memory and other signals
+      // ...
+    end else begin
+      // Output ready signal when valid is asserted
+      ready <= mem_ready;
+
+      if (valid) begin
+        // Initiate a memory read request
+        mem_ready <= 1;
+      end else begin
+        // Deassert mem_ready when valid is not asserted
+        mem_ready <= 0;
+      end
+    end
+  end
+
+  // Output the read data
+  assign data = read_data;
+
+endmodule
+
+
+L1DCACHE CODE:
+
+module L1DCache (
+  input wire clk,
+  input wire rst,
+  input wire [31:0] address,
+  output reg [31:0] data,
+  
+  output reg valid
+);
+
+  // Memory Request and Response Signals
+  reg [31:0] memory_request_address;
+  reg memory_request_valid;
+  wire memory_response_ready;
+  wire [31:0] memory_response_data;
+  reg [31:0] dataOriginal;
+
+  // Compressed data signals
+  wire [7:0] compressed_data;
+  wire [7:0] decompressed_data;
+
+  // Define cache parameters
+  parameter CACHE_SIZE = 2048; // 2 KB
+  parameter CACHE_WAY = 4;
+  parameter CACHE_LINE_SIZE = 32; // 32 bytes
+
+  // Declare cache storage
+  reg [31:0] cache_data [0:CACHE_SIZE / CACHE_LINE_SIZE - 1][0:CACHE_WAY - 1];
+  reg [31:0] cache_tags [0:CACHE_SIZE / CACHE_LINE_SIZE - 1][0:CACHE_WAY - 1];
+  reg cache_valid [0:CACHE_SIZE / CACHE_LINE_SIZE - 1][0:CACHE_WAY - 1];
+
+  // Cache state
+  reg [31:0] cache_out_data;
+  reg cache_hit;
+
+  // Compression logic
+  AxDeduplicationCompressor compressor (
+    .uncompressed_data_stream(cache_out_data),
+    .compressed_data(compressed_data)
+  );
+
+ // Decompression logic
+  AxDeduplicationDecompressor decompressor (
+    .compressed_data(compressed_data),
+    .decompressed_data(decompressed_data)
+  );
+
+  // Implement cache logic 
+  always @* begin
+    // Cache hit logic
+    cache_hit = 0;
+    for (integer way = 0; way < CACHE_WAY; way = way + 1) begin
+      if (cache_valid[address[CACHE_SIZE-1:CACHE_LINE_SIZE]][way] &&
+          cache_tags[address[CACHE_SIZE-1:CACHE_LINE_SIZE]][way] == address[CACHE_SIZE-1:5]) begin
+        cache_hit = 1;
+        // Set cache_out_data to the data from the cache
+        cache_out_data = cache_data[address[CACHE_SIZE-1:CACHE_LINE_SIZE]][way];
+      end
+    end
+  end
+
+  // Logic for handling cache misses and initiating main memory request
+  always @(posedge clk or posedge rst) begin
+    if (rst) begin
+      // Reset cache and other signals
+
+      for (integer i = 0; i < CACHE_SIZE / CACHE_LINE_SIZE; i = i + 1) begin
+        for (integer way = 0; way < CACHE_WAY; way = way + 1) begin
+          cache_valid[i][way] = 0;
+        end
+      end
+      // ...
+    end else begin
+      // Output valid signal
+      valid <= ~cache_hit; // Set valid if it's a cache miss
+
+      // Output data (4-byte word) if cache hit
+      
+      dataOriginal <= cache_out_data;
+      data <= decompressed_data;
+
+      if (~cache_hit) begin
+
+        memory_request_address = address;
+        memory_request_valid = 1;
+
+        // Wait for the memory response
+        if (memory_response_ready) begin
+          // Retrieve the data from the memory response
+          cache_out_data = memory_response_data;
+
+          // Memory request completed
+          memory_request_valid = 0;
+        end
+      end
+    end
+  end
+
+endmodule
+
+TOP MODULE CODE:
+
+module TopModule (
+  input wire clk,
+  input wire rst,
+  input wire [31:0] address,
+  output wire [31:0] data,
+  output wire valid,
+  input wire ready
+);
+
+  // Instantiate the L1 data cache module
+  L1DCache l1_cache (
+    .clk(clk),
+    .rst(rst),
+    .address(address),
+    .data(data),
+    .valid(valid)
+  );
+
+  // Instantiate the main memory module
+  MainMemory main_memory (
+    .clk(clk),
+    .rst(rst),
+    .address(address),
+    .data(data),
+    .valid(valid),
+    .ready(ready)
+  );
+
+endmodule
+
+
+TEST BECNCH CODE:
+
+module Testbench;
+
+  // Inputs
+  reg clk;
+  reg rst;
+  reg [31:0] address;
+  // Outputs
+  wire [31:0] data;
+  wire valid;
+  wire ready;
+
+  // Instantiate the top module
+  TopModule top_module (
+    .clk(clk),
+    .rst(rst),
+    .address(address),
+    .data(data),
+    .valid(valid),
+    .ready(ready)
+  );
+
+  // Clock generation
+  always begin
+    #5 clk = ~clk;
+  end
+
+  // Test case 1: Cache hit
+  initial begin
+    $display("Test case 1: Cache hit");
+    clk = 0;
+    rst = 1;
+    address = 32'h00010000;
+    #10 rst = 0;
+    #20 address = 32'h00010004;
+    if (valid === 1) begin
+      if (data === 32'hDEADBEEF) begin
+        if (ready === 1) begin
+          $display("Test case 1: Cache hit passed");
+        end else begin
+          $display("Test case 1: Cache hit failed (ready)");
+        end
+      end else begin
+        $display("Test case 1: Cache hit failed (data)");
+      end
+    end else begin
+      $display("Test case 1: Cache hit failed (valid)");
+    end
+  end
+
+  // Test case 2: Cache miss
+  initial begin
+    $display("Test case 2: Cache miss");
+    clk = 0;
+    rst = 1;
+    address = 32'h00030000;
+    #10 rst = 0;
+    #20 address = 32'h00040000;
+    if (valid === 0) begin
+      address = 32'h00030000;
+      if (valid === 1) begin
+        if (data === 32'hFACEFEED) begin
+          if (ready === 1) begin
+            $display("Test case 2: Cache miss passed");
+          end else begin
+            $display("Test case 2: Cache miss failed (ready)");
+          end
+        end else begin
+          $display("Test case 2: Cache miss failed (data)");
+        end
+      end else begin
+        $display("Test case 2: Cache miss failed (valid)");
+      end
+    end else begin
+      $display("Test case 2: Cache miss failed (valid)");
+    end
+  end
+
+  // Finish simulation
+  initial begin
+    $finish;
+  end
+
+endmodule
+
+COMPRESSION MODULE:
+module AxDeduplicationCompressor(
+  input wire [7:0] uncompressed_data_stream,
+  output wire [7:0] compressed_data
+);
+
+  // Parameters
+  parameter MAX_ERROR_MAGNITUDE = 4;
+
+  // Internal signals
+  reg [7:0] base_element;
+  reg [2:0] count;
+  reg [7:0] compressed_value;
+
+  // Compression process
+  always @* begin
+    base_element = uncompressed_data_stream[0];
+    count = 1;
+
+    for (integer i = 1; i < 8; i = i + 1) begin
+      // Use conditional operator instead of abs function
+      if ((uncompressed_data_stream[i] - base_element) <= MAX_ERROR_MAGNITUDE && (uncompressed_data_stream[i] - base_element) >= -MAX_ERROR_MAGNITUDE) begin
+        count = count + 1;
+      end else begin
+        compressed_value = {base_element, count};
+        base_element = uncompressed_data_stream[i];
+        count = 1;
+      end
+    end
+
+    compressed_value = {base_element, count};
+  end
+
+  // Output the compressed data
+  assign compressed_data = compressed_value;
+
+endmodule
+
+
+THE PROBLEM I MA  FACING IS :
+
+The thing we have to do is load data from memory is not visible on the simulation windows but actually the loaded uncompressed data shuold have 8 data blocks of 1 byte as in the problem . can you fix the problems in it 
+

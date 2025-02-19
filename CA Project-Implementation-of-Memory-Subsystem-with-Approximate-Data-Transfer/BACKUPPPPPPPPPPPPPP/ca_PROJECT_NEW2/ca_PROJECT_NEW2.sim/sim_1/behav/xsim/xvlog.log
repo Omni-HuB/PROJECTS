@@ -1,0 +1,14 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sources_1/new/AxDeDuplication.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module AxDeduplicationCompressor
+WARNING: [VRFC 10-2019] loop variable declaration is not allowed in this mode of verilog [C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sources_1/new/AxDeDuplication.v:19]
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sources_1/new/L1DCache.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module L1DCache
+WARNING: [VRFC 10-2019] loop variable declaration is not allowed in this mode of verilog [C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sources_1/new/L1DCache.v:49]
+WARNING: [VRFC 10-2019] loop variable declaration is not allowed in this mode of verilog [C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sources_1/new/L1DCache.v:64]
+WARNING: [VRFC 10-2019] loop variable declaration is not allowed in this mode of verilog [C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sources_1/new/L1DCache.v:63]
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sources_1/new/main_memory.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module MainMemory
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sources_1/new/top_module.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module TopModule
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/moham/OneDrive/Desktop/CA/Project/NEWMYPRO/ca_PROJECT_NEW2/ca_PROJECT_NEW2.srcs/sim_1/new/tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Testbench
