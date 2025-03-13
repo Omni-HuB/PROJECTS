@@ -1,0 +1,10 @@
+[{
+  "_id": {
+    "$oid": "67c9ee1d8339e3e9998388ac"
+  },
+  "name": "TGD_david",
+  "price": 500,
+  "title": "TGD",
+  "image": "",
+  "category": "martial arts"
+}]

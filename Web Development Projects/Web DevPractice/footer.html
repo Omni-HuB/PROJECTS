@@ -1,0 +1,49 @@
+
+<!--
+4. Footer
+A footer is usually at the bottom of a webpage, containing copyright information and links.
+
+Explanation
+The .footer class fixes the footer at the bottom of the page (position: fixed).
+The text is centered, and links are styled in lightgray with a hover effect.
+The &copy; symbol represents a copyright symbol.
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer Example</title>
+    <style>
+        /* Footer styling */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer a {
+            color: lightgray;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="footer">
+        &copy; 2025 MyWebsite | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+    </div>
+
+</body>
+</html>

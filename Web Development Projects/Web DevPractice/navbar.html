@@ -1,0 +1,59 @@
+
+<!--1. Navbar (Navigation Bar)
+A navbar is an important component of a website that provides navigation links to different sections or pages.
+
+
+Explanation
+The .navbar class styles the navbar with a background color and padding.
+Each <a> inside the navbar represents a menu item (Home, About, etc.).
+The :hover effect changes the background color when the user hovers over the links.
+The @media rule makes the navbar responsive for smaller screens.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Example</title>
+    <style>
+        /* Navbar styling */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            padding: 10px 20px;
+        }
+
+        /* Navbar links */
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: inline-block;
+        }
+
+        /* Change color on hover */
+        .navbar a:hover {
+            background-color: #575757;
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 600px) {
+            .navbar a {
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </div>
+
+</body>
+</html>

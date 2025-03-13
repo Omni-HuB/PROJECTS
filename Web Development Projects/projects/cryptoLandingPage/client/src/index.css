@@ -1,0 +1,70 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-primary bg-darkblue text-white leading-normal;
+  }
+  .h3 {
+    @apply text-[22px] lg:text-[32px] font-bold;
+  }
+  .btn {
+    @apply bg-blue h-[60px] px-4 rounded-full hover:bg-blue-hover transition flex items-center text-lg font-medium outline-none;
+  }
+  .section {
+    @apply py-12 lg:py-24;
+  }
+  .section-title {
+    @apply text-2xl lg:text-[40px] font-bold leading-normal mb-6;
+  }
+  .section-subtitle {
+    @apply mt-6 mb-8 text-gray;
+  }
+  .input,
+  .select {
+    @apply outline-none w-full border-b border-gray text-darkblue h-[38px] text-xl;
+  }
+  .input {
+    @apply lg:max-w-[410px] bg-transparent;
+  }
+  .select {
+    @apply lg:max-w-[200px] cursor-pointer;
+  }
+} */
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-primary bg-white text-black leading-normal;
+  }
+  .h3 {
+    @apply text-[22px] lg:text-[32px] font-bold text-black;
+  }
+  .btn {
+    @apply bg-yellow-500 h-[60px] px-4 rounded-full hover:bg-yellow-600 transition flex items-center text-lg font-medium text-black shadow-md outline-none;
+  }
+  .section {
+    @apply py-12 lg:py-24 bg-gray-100;
+  }
+  .section-title {
+    @apply text-2xl lg:text-[40px] font-bold leading-normal text-black mb-6;
+  }
+  .section-subtitle {
+    @apply mt-6 mb-8 text-gray-800;
+  }
+  .input,
+  .select {
+    @apply outline-none w-full border-b border-gray-600 text-black h-[38px] text-xl;
+  }
+  .input {
+    @apply lg:max-w-[410px] bg-white;
+  }
+  .select {
+    @apply lg:max-w-[200px] cursor-pointer bg-white;
+  }
+}

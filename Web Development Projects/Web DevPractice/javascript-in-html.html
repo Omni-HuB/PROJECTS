@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <script>
+        function clickme() {
+            alert('Hello, World! Button was clicked');
+            console.log('Button was clicked successfully javascript run successfully from inside html');
+            document.getElementById('p1').style.backgroundColor = 'red';
+            document.getElementById('p1').style.color = 'white';
+            document.getElementById('p1').style.fontSize = '24px';
+            document.getElementById('p1').innerText = 'Text Was Chanded on button click';
+        }
+    </script>
+    
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
+
+    <main>
+        <p id="p1">This is a sample HTML boilerplate.</p>
+        <p>Click the button below to see an alert message.</p>
+        <button id="my_button" onclick="clickme()">Click me!</button>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Your Name</p>
+    </footer>
+    
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!--
+
+2. Search Bar
+A search bar allows users to enter queries and find content on the website.
+Explanation
+The .search-container uses display: flex to align the search box and button horizontally.
+
+The .search-box is an <input> field where users type their search query.
+The .search-button is a <button> element that simulates a search function.
+border-radius: 5px gives rounded corners to the input box and button.
+The :hover effect changes the background color of the button when the user hovers over it.
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar Example</title>
+    <style>
+
+
+        /* Center the search bar */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* Style for input box */
+        .search-box {
+            width: 300px;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Style for search button */
+        .search-button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+            border-radius: 5px;
+        }
+
+        /* Button hover effect */
+        .search-button:hover {
+            background-color: #575757;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search here...">
+        <button class="search-button">Search</button>
+    </div>
+
+</body>
+</html>

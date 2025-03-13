@@ -1,0 +1,73 @@
+<!--
+
+3. Login Form
+A login form allows users to enter their credentials to access a website.
+
+Explanation
+The .login-container centers the form and styles it with a background and shadow.
+The <input> fields allow users to enter their username and password.
+The .login-button is styled to look like a submit button.
+The :hover effect changes the button color on mouse hover.
+
+
+-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        /* Center the login form */
+        .login-container {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f4f4f4;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Input fields */
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Login button */
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .login-button:hover {
+            background-color: #575757;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form>
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button class="login-button">Login</button>
+        </form>
+    </div>
+
+</body>
+</html>
